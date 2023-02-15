@@ -4,22 +4,11 @@ require 'flight/Flight.php';
 
 Flight::register('db', 'PDO', array('mysql:host=localhost;dbname=CodigosPostales','root',''));
 
-// Flight::route('/', function($route){
-//     // Array of HTTP methods matched against
-//     $route->methods;
-
-//     // Array of named parameters
-//     $route->params;
-
-//     // Matching regular expression
-//     $route->regex;
-
-//     // Contains the contents of any '*' used in the URL pattern
-//     $route->splat;
-// }, true);
-
 header('autor: VictorMtz');
 header('info: La informacion se obtuvo en sepomex');
+Flight::route('/', function(){
+    echo 'Hola mundo';
+});
 
 Flight::route('/Estados', function () {
     $sentencia = Flight::db()->prepare("SELECT DISTINCT(Estado), EstadoId FROM CodigoPostal");
@@ -62,9 +51,5 @@ Flight::route('/Estados/@estadoId/alcaldias/@alcaldiaId', function ($estadoId, $
 
     Flight::json($datos, 200);    
 });
-
-// Flight::route('/', function () {
-//     echo 'hello world!';
-// });
 
 Flight::start();
