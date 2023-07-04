@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Códigos Postales</title>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
+</head>
+
+<body>
+    <div class="uk-container">
+
+        <article class="uk-article">
+
+            <h1 class="uk-article-title">Api Rest Códigos Postales</h1>
+
+            <p class="uk-article-meta">Escrito por <a href="#">Víctor Martínez</a> 15 Febrero 2023.</p>
+
+            <p class="uk-text-lead">La información fue obtenida de Correos de México</p>
+
+            <hr/>
+            <ul uk-accordion="multiple: true">
+                <li class="uk-open">
+                    <a class="uk-accordion-title" href="#">Obtener Código Postal aleatorio</a>
+                    <div class="uk-accordion-content">
+
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title uk-text-break">index.php/CodigosPostales/aleatorio</h3>
+                                <form>
+                                    <div class="uk-margin">
+                                        <button class="uk-button uk-button-primary"
+                                            onclick="obtenerCodigoPostalAleatorio()" type="button"
+                                            id="buttonObtenerCodigoPostalAleatorio">Obtener</button>
+                                        <button class="uk-button uk-button-secondary"
+                                            onclick="limpiarCodigoPostalAleatorio()" type="reset">Limpiar</button>
+                                    </div>
+                                    <div class="uk-margin">
+                                        <textarea class="uk-textarea" id="textAreaCodigoPostalAleatorio" cols=50
+                                            rows=10></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="uk-open">
+                    <a class="uk-accordion-title" href="#">Obtener código postal</a>
+                    <div class="uk-accordion-content">
+
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title uk-text-break">index.php/CodigosPostales/<span
+                                        id="spanObtenerCodigoPostal"></span></h3>
+                                <div class="uk-margin">
+                                    <div uk-grid>
+                                        <div>
+                                            <input class="uk-input" id="textObtenerCodigoPostal" />
+                                        </div>
+                                        <div>
+                                            <button class="uk-button uk-button-primary" onclick="obtenerCodigoPostal()"
+                                                id="buttonObtenerCodigoPostal">Obtener
+                                                <div uk-spinner="ratio: 1"
+                                                    class="uk-animation-fade uk-animation-reverse"
+                                                    id="spinnerObtenerCodigoPostal"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <textarea class="uk-textarea" id="textAreaCodigoPostal" cols=50 rows=10></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="uk-open">
+                    <a class="uk-accordion-title" href="#">Estados</a>
+                    <div class="uk-accordion-content">
+
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title uk-text-break">index.php/CodigosPostales/Estados</h3>
+                                <form>
+                                    <div class="uk-margin">
+                                        <button class="uk-button uk-button-primary" onclick="obtenerEstados()"
+                                            type="button" id="buttonObtenerEstados">Obtener</button>
+                                        <button class="uk-button uk-button-secondary"
+                                            onclick="limpiarCodigoPostalAleatorio()" type="reset">Limpiar</button>
+                                    </div>
+                                    <div class="uk-margin">
+                                        <textarea class="uk-textarea" id="textAreaEstados" cols=50 rows=10></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="uk-open">
+                    <a class="uk-accordion-title" href="#">Alcaldias</a>
+                    <div class="uk-accordion-content">
+
+                        <div class="uk-card uk-card-default">
+                            <div class="uk-card-body">
+                                <h3 class="uk-card-title uk-text-break">index.php/CodigosPostales/Estados/<span id="spanEstado">9</span></h3>
+                                <form>
+                                    <div class="uk-margin">
+                                        <div>
+                                            <input class="uk-input" id="textEstado" value="9" />
+                                        </div>
+                                        <button class="uk-button uk-button-primary" onclick="obtenerAlcaldias()"
+                                            type="button" id="buttonObtenerAlcaldias">Obtener</button>
+                                        <button class="uk-button uk-button-secondary"
+                                            onclick="limpiarTextArea('textAreaAlcaldias')" type="reset">Limpiar</button>
+                                    </div>
+                                    <div class="uk-margin">
+                                        <textarea class="uk-textarea" id="textAreaAlcaldias" cols=50 rows=10></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+
+        </article>
+
+    </div>
+ 
+    <div class="uk-background-muted">
+        <div class="uk-card uk-card-default uk-card-body uk-text-center uk-position-z-index"
+            uk-sticky="position: bottom">Api códigos postales por Víctor Martínez</div>
+    </div>
+    <script>
+        const urlBase = 'https://codigospostalex.000webhostapp.com/api/v2/index.php'
+        function obtenerCodigoPostalAleatorio() {
+            button = document.getElementById('buttonObtenerCodigoPostalAleatorio')
+
+            button.disabled = true
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+            fetch("https://codigospostalex.000webhostapp.com/api/v2/index.php/CodigosPostales/Aleatorio", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    var obj = JSON.parse(result);
+                    var pretty = JSON.stringify(obj, undefined, 4);
+                    document.getElementById("textAreaCodigoPostalAleatorio").innerHTML = pretty
+                    button.disabled = false
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function limpiarCodigoPostalAleatorio() {
+            document.getElementById("textAreaCodigoPostalAleatorio").innerHTML = ""
+        }
+
+        function obtenerCodigoPostal() {
+            var codigoPostal
+            var button            
+
+            codigoPostal = document.getElementById('textObtenerCodigoPostal').value
+            document.getElementById('spanObtenerCodigoPostal').innerText = codigoPostal
+            button = document.getElementById('buttonObtenerCodigoPostal')
+            button.disabled = true
+            fetch(urlBase +"/CodigosPostales/" + codigoPostal)
+                .then(response => response.text())
+                .then(result => {
+                    var obj = JSON.parse(result);
+                    var pretty = JSON.stringify(obj, undefined, 4);
+                    document.getElementById("textAreaCodigoPostal").innerHTML = pretty
+                    button.disabled = false
+                    spinner.classList.add('uk-animation-reverse')
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function obtenerEstados() {
+            button = document.getElementById('buttonObtenerEstados')
+
+            button.disabled = true
+            fetch("https://codigospostalex.000webhostapp.com/api/v2/index.php/Estados")
+                .then(response => response.text())
+                .then(result => {
+                    var obj = JSON.parse(result);
+                    var pretty = JSON.stringify(obj, undefined, 4);
+                    document.getElementById("textAreaEstados").innerHTML = pretty
+                    button.disabled = false
+                })
+                .catch(error => console.log('error', error));
+        }
+    
+        function limpiarTextArea(id){
+            document.getElementById(id).innerText = ''
+        }
+
+        function obtenerAlcaldias(){
+            var button
+            var estado
+
+            button = document.getElementById('buttonObtenerAlcaldias')
+            button.disabled = true
+            estado = document.getElementById('textEstado').value
+            document.getElementById('spanEstado').innerText = estado
+            fetch(urlBase +"/Estados/" + estado + "/Alcaldias")
+                .then(response => response.text())
+                .then(result => {
+                    var obj = JSON.parse(result);
+                    var pretty = JSON.stringify(obj, undefined, 4);
+                    document.getElementById("textAreaAlcaldias").innerHTML = pretty
+                    button.disabled = false                    
+                })
+                .catch(error => console.log('error', error));
+        }
+    </script>
+</body>
+
+</html>

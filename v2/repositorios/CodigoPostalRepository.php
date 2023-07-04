@@ -1,5 +1,5 @@
 <?php
-include_once 'conexion.php';
+include_once 'Conexion.php';
 
 class CodigoPostalRepository extends Conexion
 {
@@ -44,6 +44,26 @@ class CodigoPostalRepository extends Conexion
         $query = "SELECT codigoPostal, estado, estadoId, alcaldia, alcaldiaId, tipoDeAsentamiento, asentamiento FROM CodigoPostal WHERE CodigoPostal = ?";
         $sentencia = $this->mysqli->prepare($query);
         $sentencia->bind_param('s', $codigoPostal);
+        $sentencia->execute();
+        $resultado = $sentencia->get_result();
+        $datos = $resultado->fetch_all(MYSQLI_ASSOC);
+
+        return $datos;
+    }
+
+    public function obtener_aleatorio(){
+        $query;
+        $resultado;
+        $datos;
+        $sentencia;
+        $id;
+        $total;
+        
+        $total = "SELECT COUNT(id) FROM codigopostal";
+        $id = rand(1, $total);
+        $query = "SELECT codigoPostal, estado, estadoId, alcaldia, alcaldiaId, tipoDeAsentamiento, asentamiento FROM codigopostal WHERE id = ? LIMIT 1";
+        $sentencia = $this->mysqli->prepare($query);
+        $sentencia->bind_param('i', $id);
         $sentencia->execute();
         $resultado = $sentencia->get_result();
         $datos = $resultado->fetch_all(MYSQLI_ASSOC);

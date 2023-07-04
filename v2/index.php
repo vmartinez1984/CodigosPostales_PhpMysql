@@ -6,47 +6,47 @@ $url;
 $uri;
 
 $repository = new CodigosPostalesRepository();
-$url = strtolower($_SERVER["PATH_INFO"]);
-$uri = explode("/", strtolower($_SERVER["PATH_INFO"]));
-//print_r($uri);
-//print_r($_SERVER);
+if (isset($_SERVER["PATH_INFO"])) {
+    $url = strtolower($_SERVER["PATH_INFO"]);
+    $uri = explode("/", strtolower($_SERVER["PATH_INFO"]));
+    //print_r($uri);
+    //print_r($_SERVER);
+    //header("Content-type: application/json; charset=UTF-8");
+    header('autor: VictorMtz');
+    header('info: La informacion se obtuvo en sepomex');
+    // http://127.0.0.1:8080/codigosPostales/v2/index.php/api/estados
+    if (str_contains($url, '/api/codigospostales/')) {
+        $codigosPostales;
 
-header("Content-type: application/json; charset=UTF-8");
-header('autor: VictorMtz');
-header('info: La informacion se obtuvo en sepomex');
-// http://127.0.0.1:8080/codigosPostales/v2/index.php/api/estados
-if (str_contains($url,'/api/codigospostales/')) {
-    $codigosPostales;
+        $codigosPostales = $repository->codigoPostal->obtener_por_codigo_postal($uri[3]);
 
-    $codigosPostales = $repository->codigoPostal->obtener_por_codigo_postal($uri[3]);
+        echo json_encode($codigosPostales);
+    } else if ($url == '/api/codigospostales/aleatorio') {
+        $codigoPostal;
 
-    echo json_encode($codigosPostales);
-}else if ($url == '/api/estados') {
-    $estados;
+        $codigoPostal = $repository->codigoPostal->obtener_aleatorio();
 
-    $estados = $repository->estado->obtener_todos();
+        return $codigoPostal;
+    } else if ($url == '/api/estados') {
+        $estados;
 
-    echo json_encode($estados);
-} else if ($uri[2] == 'estados' && $uri[4] == 'alcaldias' && (!isset($uri[5]) || $uri[5] == '')){
-    $alcaldias;
+        $estados = $repository->estado->obtener_todos();
 
-    $alcaldias = $repository->alcaldia->obtener_todos_por_estado($uri[3]);
+        echo json_encode($estados);
+    } else if ($uri[2] == 'estados' && $uri[4] == 'alcaldias' && (!isset($uri[5]) || $uri[5] == '')) {
+        $alcaldias;
 
-    echo json_encode($alcaldias);
-} else if ($uri[2] == 'estados' && $uri[4] == 'alcaldias' && isset($uri[5]) && $uri[5] != '') {
-    $codigosPostales;
+        $alcaldias = $repository->alcaldia->obtener_todos_por_estado($uri[3]);
 
-    $codigosPostales = $repository->codigoPostal->obtener_por_estado_y_alcadia($uri[3], $uri[5]);
+        echo json_encode($alcaldias);
+    }
+    if ($uri[2] == 'estados' && $uri[4] == 'alcaldias' && isset($uri[5]) && $uri[5] != '') {
+        $codigosPostales;
 
-    echo json_encode($codigosPostales);
+        $codigosPostales = $repository->codigoPostal->obtener_por_estado_y_alcadia($uri[3], $uri[5]);
+
+        echo json_encode($codigosPostales);
+    }
+} else {
+    include_once 'doc/index.html';
 }
-// }else{
-//     $arrayName = array(
-//         'Mensaje' => "Dirección no encontrada", 
-//         'peticiones' => ["/api/CodigosPostales/42950", "Consulta de codigo postal"]
-//         //'Lista de estados' => "/api/estados", 
-//         //'Lista de alcaldias por estado o estadoId' => "/api/Estados/9/Alcaldias/",
-//         //'Lista de alcaldias por estado o estadoId y alcaldia o alcaldiaID' => "/api/Estados/9/Alcaldias/15"
-//     );
-//     echo json_encode($arrayName);
-// }
