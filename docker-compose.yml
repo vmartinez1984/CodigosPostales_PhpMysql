@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile   
+    ports:
+      - 8081:80
+    depends_on:
+      - mysql
+    container_name: codigos-postales-php
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: mysqldbfesa
+    environment:
+      MYSQL_DATABASE: 'CodigosPostales'
+      MYSQL_ROOT_PASSWORD: '123456'
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+      # Where our data will be persisted
+    volumes:
+      - ~/Documents/repos/Intersemestral-1-2024/Docker-MySql/volumen:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+# comando: docker-compose up
